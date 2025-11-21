@@ -29,6 +29,24 @@ model User {
   @@map("users")
 }
 
+model Category {
+  id Int @id @default(autoincrement())
+  name String @unique
+
+  bookmarks Bookmark[]
+
+  @@map("categories")
+} 
+
+model Tag {
+  id Int @id @default(autoincrement())
+  name String @unique
+
+  bookmarks Bookmark[]
+
+  @@map("tags")
+}
+
 model Bookmark {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -37,6 +55,11 @@ model Bookmark {
   title String @unique
   link String @unique
   description String?
+
+  isFavorite Boolean @default(false)
+  tags Tag[]
+  categoryId Int?
+  category Category? @relation(fields: [categoryId], references: [id])
 
   userId Int
   user User @relation(fields: [userId], references: [id])
